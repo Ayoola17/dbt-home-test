@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: customer_transactions
+    description: Consolidated customer transaction data
+    columns:
+      - name: customer_id
+        description: The unique identifier for each customer
+        tests:
+          - unique
+          - not_null
+      - name: name
+        description: The name of the customer
+        tests:
+          - not_null
+      - name: date_of_birth
+        description: The birth date of the customer
+        tests:
+          - not_null
+      - name: joined_date
+        description: The date the customer joined
+        tests:
+          - not_null
+      - name: total_transactions
+        description: Total transactions made by each customer
+        tests:
+          - not_null
+      - name: avg_monthly_spending
+        description: Average monthly spending for each customer
+        tests:
+          - not_null
+      - name: avg_spending_interval
+        description: The average number of days it takes for the customer to perform a transaction
+        tests:
+          - not_null
+
+  - name: monthly_summary
+    description: >
+      This model provides a monthly summary of transaction amounts over the past 12 months. 
+      It includes total transaction amount for each month, the percent change in transaction 
+      amounts month over month, and the top spending customer for each month.
+      
+    columns:
+      - name: transaction_month
+        description: The year and month of the transactions
+        tests:
+          - not_null
+          - unique
+
+      - name: total_amount
+        description: Total transaction amount for the month
+        tests:
+          - not_null
+
+      - name: percent_change
+        description: Percent change in transaction amounts from the previous month
+
+      - name: customer_id
+        description: The ID of the top spending customer for the month
+        tests:
+          - not_null
+
+      - name: customer_name
+        description: The name of the top spending customer for the month
+        tests:
+          - not_null
+
+      - name: customer_total
+        description: The total amount spent by the top spending customer for the month
+        tests:
+          - not_null
