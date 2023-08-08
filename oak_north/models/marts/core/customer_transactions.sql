@@ -1,3 +1,7 @@
+-- 
+-- BASE CTE: This part of the query is responsible for creating a foundational data set. 
+-- It joins customers and transactions datasets and filters out any missing or future data.
+--
 WITH base AS (
     SELECT
         c.customer_id,
@@ -23,6 +27,10 @@ WITH base AS (
     AND CAST(strftime('%Y', t.transaction_date) AS INT) <= 2100 
 ),
 
+-- 
+-- INTERVALS CTE: This part calculates the difference in days between the current transaction and the previous one.
+-- If no previous transaction exists, the interval is NULL.
+--
 intervals AS (
     SELECT
         customer_id,
@@ -37,6 +45,11 @@ intervals AS (
     FROM base
 ),
 
+-- 
+-- AGGREGATES CTE: Here, we summarize the data at the customer level. 
+-- We count the distinct transactions, average the amounts, and also calculate the average interval.
+--
+
 aggregates AS (
     SELECT
         customer_id,
@@ -46,6 +59,11 @@ aggregates AS (
     FROM intervals
     GROUP BY customer_id
 )
+
+-- 
+-- FINAL QUERY:  returns a user-friendly version of our data by joining base data with aggregates. 
+-- This will provide a comprehensive view of each customer's activities.
+--
 
 SELECT
     b.customer_id,
